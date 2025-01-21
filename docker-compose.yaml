@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: DockerfileFrontendAMGP
+    container_name: frontendAMGP
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Activa polling para asegurar detección de cambios en Docker
+    networks:
+      - redwebAMGP
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: DockerfileBackendAMGP
+    container_name: backendAMGP
+    command: bash -c "composer install && php -S 0.0.0.0:8000 -t public"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    networks:
+      - redwebAMGP
+
+  web:
+    build:
+      context: ./web
+      dockerfile: DockerfileWebAMGP
+    container_name: webAMGP
+    ports:
+      - "80:80" # Si tienes problemas con el puerto 80, cambia el puerto externo aquí
+    networks:
+      - redwebAMGP
+
+networks:
+  redwebAMGP:
+    driver: bridge
