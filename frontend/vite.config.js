@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   server: {
     host: "0.0.0.0",
-    allowedHosts: ['frontend', 'localhost', '0.0.0.0'] // Add allowed hosts here
+    allowedHosts: ['frontend'] // Add allowed hosts here
   },
   
   plugins: [react()],
